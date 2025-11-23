@@ -5,8 +5,8 @@ variable "aws_region" {
 }
 
 variable "project_name" {
-  description = "Ecommerce-Obligatorio"
+  description = "Ecommerce-Obligatorio-ISC"
   type        = string
-  default     = "Ecommerce-Obligatorio"
+  default     = "Ecommerce-Obligatorio-ISC"
 }
 
