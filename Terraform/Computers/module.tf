@@ -1,0 +1,44 @@
+
+resource "aws_security_group" "sg_app" {
+name = "sg-app"
+vpc_id = var.vpc_id
+
+
+ingress {
+from_port = 80
+to_port = 80
+protocol = "tcp"
+security_groups = [var.sg_alb_id]
+}
+}
+
+
+resource "aws_launch_template" "app" {
+name_prefix = "lt-ecommerce-"
+image_id = data.aws_ami.amazon_linux.id
+instance_type = var.instance_type
+key_name = var.key_name
+
+
+vpc_security_group_ids = [aws_security_group.sg_app.id]
+
+
+user_data = base64encode("#!/bin/bash\nyum install -y httpd\nsystemctl start httpd\necho 'EC2 APP OK' > /var/www/html/index.html")
+}
+
+
+resource "aws_autoscaling_group" "asg" {
+vpc_zone_identifier = var.app_subnets
+desired_capacity = 2
+min_size = 2
+max_size = 6
+
+
+launch_template {
+id = aws_launch_template.app.id
+version = "$Latest"
+}
+}
+
+
+output "sg_app_id" { value = aws_security_group.sg_app.id }
