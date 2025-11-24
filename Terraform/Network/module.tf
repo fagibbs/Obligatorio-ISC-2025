@@ -9,7 +9,7 @@ availability_zone = "us-east-1a"
 resource "aws_subnet" "db_b" {
 vpc_id = aws_vpc.main.id
 cidr_block = var.private_db_az2
-availability_zone = "us-east-1b"
+availability_zone = "${var.region}b"
 }
 
 
