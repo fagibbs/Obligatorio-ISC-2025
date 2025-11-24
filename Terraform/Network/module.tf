@@ -1,8 +1,8 @@
 resource "aws_vpc" "main" {
 resource "aws_subnet" "db_a" {
 vpc_id = aws_vpc.main.id
-cidr_block = "10.0.20.0/24"
-availability_zone = "us-east-1a"
+cidr_block = var.private_db_az1
+availability_zone = "${var.region}a"
 }
 
 
