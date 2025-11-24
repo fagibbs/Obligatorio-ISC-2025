@@ -1,6 +1,15 @@
+# VPC 
+# - Red donde están los recursos
+# - CIDR grande para poder dividir en varias subnets
+
 resource "aws_vpc" "main" {
   cidr_block = var.vpc
 }
+
+# SUBNETS PRIVADAS PARA BASE DE DATOS
+# - No tienen salida a Internet
+# - Solo las EC2 acceden a estas subnets
+
 resource "aws_subnet" "db_a" {
   vpc_id = aws_vpc.main.id
   cidr_block = var.private_db_az1
@@ -14,16 +23,20 @@ resource "aws_subnet" "db_b" {
   availability_zone = "${var.region}b"
 }
 
+# NAT GATEWAY
+# - Permite que las EC2 salgan a Internet
 
 resource "aws_eip" "nat" {
 }
-
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
   subnet_id = aws_subnet.public_a.id
 }
 
+# ROUTE TABLE PUBLICA
+# - Las subnets públicas usan esta tabla
+# - El tráfico 0.0.0.0/0 va hacia el IGW luego a Internet
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
