@@ -14,14 +14,14 @@ resource "aws_internet_gateway" "igw" {
 resource "aws_subnet" "public_a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.public_subnet_a
-  availability_zone = "us-east-1a"
+  availability_zone = "${var.region}a"
   map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "public_b" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.public_subnet_b
-  availability_zone = "us-east-1b"
+  availability_zone = "${var.region}b"
   map_public_ip_on_launch = true
 }
 
@@ -29,26 +29,26 @@ resource "aws_subnet" "public_b" {
 resource "aws_subnet" "app_a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_app_az1
-  availability_zone = "us-east-1a"
+  availability_zone = "${var.region}a"
 }
 
 resource "aws_subnet" "app_b" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_app_az2
-  availability_zone = "us-east-1b"
+  availability_zone = "${var.region}b"
 }
 
 # SUBNETS PRIVADAS DB
 resource "aws_subnet" "db_a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_db_az1
-  availability_zone = "us-east-1a"
+  availability_zone = "${var.region}a"
 }
 
 resource "aws_subnet" "db_b" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_db_az2
-  availability_zone = "us-east-1b"
+  availability_zone = "${var.region}b"
 }
 
 # EIP + NAT Gateway
