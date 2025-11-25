@@ -27,11 +27,14 @@ resource "aws_instance" "db" {
 
   vpc_security_group_ids = [aws_security_group.sg_db.id]
 
-  user_data = base64encode("#!/bin/bash
+  user_data = base64encode(<<EOF
+#!/bin/bash
 yum update -y
 yum install -y mysql-server
+systemctl enable mysqld
 systemctl start mysqld
-systemctl enable mysqld")
+EOF
+  )
 
   tags = {
     Name = "ec2-db-ecommerce"
