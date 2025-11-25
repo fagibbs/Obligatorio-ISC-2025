@@ -24,4 +24,7 @@ module "db" {
   db_subnets = module.network.db_subnets
   sg_app_id  = module.computers.sg_app_id
   key_name   = var.key_name
+
+  db_username = var.db_username
+  db_password = var.db_password
 }
