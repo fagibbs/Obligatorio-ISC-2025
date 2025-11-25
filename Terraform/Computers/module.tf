@@ -32,10 +32,14 @@ resource "aws_launch_template" "app" {
 
   vpc_security_group_ids = [aws_security_group.sg_app.id]
 
-  user_data = base64encode("#!/bin/bash
+  user_data = base64encode(<<EOF
+#!/bin/bash
 yum install -y httpd
+systemctl enable httpd
 systemctl start httpd
-echo 'EC2 APP OK' > /var/www/html/index.html")
+echo "EC2 APP OK" > /var/www/html/index.html
+EOF
+  )
 
   metadata_options {
     http_tokens = "required"
@@ -63,4 +67,3 @@ output "sg_app_id" {
 output "asg_name" {
   value = aws_autoscaling_group.asg.name
 }
-
