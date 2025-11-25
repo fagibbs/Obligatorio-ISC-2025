@@ -62,3 +62,22 @@ variable "key_name" {
   description = "Nombre del key pair existente en AWS"
   type        = string
 }
+variable "vpc_id" {
+  type = string
+}
+
+variable "db_subnets" {
+  type = list(string)
+}
+
+variable "sg_app_id" {
+  type = string
+}
+
+variable "db_username" {
+  default = "admin"
+}
+
+variable "db_password" {
+  default = "admin@111"
+}
