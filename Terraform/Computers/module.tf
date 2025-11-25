@@ -1,4 +1,3 @@
-
 resource "aws_security_group" "sg_app" {
 name = "sg-app"
 vpc_id = var.vpc_id
