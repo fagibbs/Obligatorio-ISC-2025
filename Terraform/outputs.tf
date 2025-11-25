@@ -8,9 +8,13 @@ output "vpc_id" {
   value       = module.network.vpc_id
 }
 
-output "db_private_ip" {
-  description = "IP privada de la base de datos (EC2 simulando RDS)"
-  value       = module.db.db_private_ip
+output "db_endpoint" {
+  description = "Endpoint de la base de datos MySQL"
+  value       = aws_db_instance.mysql.endpoint
+}
+
+output "db_port" {
+  value = aws_db_instance.mysql.port
 }
 
 output "asg_name" {
