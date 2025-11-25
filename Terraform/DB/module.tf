@@ -44,3 +44,7 @@ EOF
 output "db_private_ip" {
   value = aws_instance.db.private_ip
 }
+
+output "sg_db_id" {
+  value = aws_security_group.sg_db.id
+}

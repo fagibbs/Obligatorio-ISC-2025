@@ -14,7 +14,9 @@ module "computers" {
   vpc_id            = module.network.vpc_id
   app_subnets       = module.network.app_subnets
   sg_alb_id         = module.services.sg_alb_id
+  sg_db_id          = module.db.sg_db_id
   target_group_arn  = module.services.target_group_arn
+  instance_type     = var.instance_type
   key_name          = var.key_name
 }
 
