@@ -17,27 +17,24 @@ resource "aws_security_group" "sg_db" {
   }
 }
 
-resource "aws_instance" "db" {
-  ami           = data.aws_ami.amazon_linux.id
-  instance_type = "t3.micro"
-  subnet_id     = var.db_subnets[0]
-  key_name      = var.key_name
+resource "aws_db_instance" "mysql" {
+  identifier = "ecommerce-db"
 
-  associate_public_ip_address = false
+  engine = "mysql"
+  engine_version = "8.0"
+  instance_class = "db.t3.micro"     
+  allocated_storage = 20
+  storage_type = "gp2"
+  multi_az = true              
+  username = var.db_username
+  password = var.db_password
 
+  db_subnet_group_name = aws_db_subnet_group.db_subnets.name
   vpc_security_group_ids = [aws_security_group.sg_db.id]
 
-  user_data = base64encode(<<EOF
-#!/bin/bash
-yum update -y
-yum install -y mysql-server
-systemctl enable mysqld
-systemctl start mysqld
-EOF
-  )
 
   tags = {
-    Name = "ec2-db-ecommerce"
+    Name = "rds-mysql-ecommerce"
   }
 }
 
