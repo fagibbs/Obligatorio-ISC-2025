@@ -3,18 +3,42 @@ resource "aws_security_group" "sg_alb" {
   vpc_id = var.vpc_id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = [var.sg_app_id]
   }
+}
+resource "aws_s3_bucket" "alb_logs" {
+  bucket = "${var.project_name}-alb-logs"
+
+  tags = {
+    Name = "${var.project_name}-alb-logs"
+  }
+}
+resource "aws_s3_bucket_policy" "alb_logs_policy" {
+  bucket = aws_s3_bucket.alb_logs.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "elasticloadbalancing.amazonaws.com"
+        }
+        Action   = "s3:PutObject"
+        Resource = "${aws_s3_bucket.alb_logs.arn}/*"
+      }
+    ]
+  })
 }
 
 resource "aws_lb" "alb" {
@@ -22,6 +46,15 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.sg_alb.id]
   subnets            = var.public_subnets
+
+  access_logs {
+    bucket  = aws_s3_bucket.alb_logs.bucket
+    enabled = true
+  }
+  tags = {
+    Name = "alb-ecommerce"
+  }
+
 }
 
 resource "aws_lb_target_group" "tg" {
