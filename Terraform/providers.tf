@@ -1,6 +1,9 @@
+# Configuración global de Terraform
 terraform {
+  # Versión mínima requerida de Terraform
   required_version = ">= 1.5.0"
 
+  # Proveedores utilizados por el proyecto
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -9,6 +12,7 @@ terraform {
   }
 }
 
+# Proveedor AWS con región que usamos siempre
 provider "aws" {
   region = var.aws_region
 }
