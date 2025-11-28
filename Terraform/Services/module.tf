@@ -1,28 +1,32 @@
 resource "aws_security_group" "sg_alb" {
-  name   = "sg-alb"
+  name   = "alb-sg"
   vpc_id = var.vpc_id
 
+  # ALB acepta tráfico HTTP desde internet
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Egress por defecto (no necesita reglas adicionales)
   egress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = [var.sg_app_id]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 resource "aws_s3_bucket" "alb_logs" {
-  bucket = "${var.project_name}-alb-logs"
+  bucket = "${lower(var.project_name)}-alb-logs"
 
   tags = {
-    Name = "${var.project_name}-alb-logs"
+    Name = "${lower(var.project_name)}-alb-logs"
   }
 }
+
 resource "aws_s3_bucket_policy" "alb_logs_policy" {
   bucket = aws_s3_bucket.alb_logs.id
 
@@ -51,10 +55,10 @@ resource "aws_lb" "alb" {
     bucket  = aws_s3_bucket.alb_logs.bucket
     enabled = true
   }
+
   tags = {
     Name = "alb-ecommerce"
   }
-
 }
 
 resource "aws_lb_target_group" "tg" {
