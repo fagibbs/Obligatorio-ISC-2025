@@ -3,6 +3,11 @@ variable "aws_region" {
   type        = string
   default     = "us-east-1"
 }
+variable "region" {
+  description = "Región AWS donde se desplegará la infraestructura"
+  type        = string
+  default     = "us-east-1"
+}
 
 variable "project_name" {
   description = "Nombre del proyecto"
@@ -62,22 +67,11 @@ variable "key_name" {
   description = "Nombre del key pair existente en AWS"
   type        = string
 }
-variable "vpc_id" {
-  type = string
-}
-
-variable "db_subnets" {
-  type = list(string)
-}
-
-variable "sg_app_id" {
-  type = string
-}
 
 variable "db_username" {
   default = "admin"
 }
 
 variable "db_password" {
-  default = "admin@111"
+  default = "admin111"
 }
