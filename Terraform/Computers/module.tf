@@ -1,5 +1,5 @@
 resource "aws_security_group" "sg_app" {
-  name   = "sg-app"
+  name   = "app-sg"
   vpc_id = var.vpc_id
 
   ingress {
@@ -7,13 +7,6 @@ resource "aws_security_group" "sg_app" {
     to_port         = 80
     protocol        = "tcp"
     security_groups = [var.sg_alb_id]
-  }
-
-  egress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [var.sg_db_id]
   }
 
   egress {
@@ -26,7 +19,7 @@ resource "aws_security_group" "sg_app" {
 
 resource "aws_launch_template" "app" {
   name_prefix   = "lt-ecommerce-"
-  image_id      = data.aws_ami.amazon_linux.id
+  image_id = var.ami_id
   instance_type = var.instance_type
   key_name      = var.key_name
 
