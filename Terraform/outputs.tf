@@ -9,15 +9,16 @@ output "vpc_id" {
 }
 
 output "db_endpoint" {
-  description = "Endpoint de la base de datos MySQL"
-  value       = aws_db_instance.mysql.endpoint
+  description = "Endpoint del RDS MySQL"
+  value       = module.db.db_endpoint
 }
 
 output "db_port" {
-  value = aws_db_instance.mysql.port
+  description = "Puerto del RDS"
+  value       = module.db.db_port
 }
 
 output "asg_name" {
-  description = "Nombre del Auto Scaling Group de la capa APP"
+  description = "Nombre del Auto Scaling Group"
   value       = module.computers.asg_name
 }
