@@ -30,7 +30,7 @@ resource "aws_launch_template" "app" {
 yum install -y httpd
 systemctl enable httpd
 systemctl start httpd
-echo "EC2 APP OK" > /var/www/html/index.html
+echo "Bien ahí! EC2 funcionando OK. Hola profe!" > /var/www/html/index.html
 EOF
   )
 
