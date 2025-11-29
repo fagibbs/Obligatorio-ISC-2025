@@ -1,3 +1,4 @@
+# Security Group del ALB
 resource "aws_security_group" "sg_alb" {
   name   = "alb-sg"
   vpc_id = var.vpc_id
