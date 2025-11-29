@@ -1,11 +1,13 @@
+# VPC principal donde vive toda la arquitectura del e-commerce
 resource "aws_vpc" "main" {
+ # Rango de direcciones IP de la VPC
   cidr_block = var.vpc_cidr
   tags = {
     Name = "vpc-ecommerce"
   }
 }
 
-# Internet Gateway
+# Internet Gateway para permitir salida/entrada desde Internet a la VPC
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 }
@@ -69,6 +71,11 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.igw.id
   }
 }
+
+# ________________________________________
+# TABLA DE RUTEO PÚBLICA
+
+# Route Table para subnets públicas (ALB y NAT)
 
 resource "aws_route_table_association" "public_a" {
   subnet_id      = aws_subnet.public_a.id
