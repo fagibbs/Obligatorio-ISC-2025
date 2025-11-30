@@ -99,3 +99,41 @@ output "target_group_arn" {
 output "alb_dns_name" {
   value = aws_lb.alb.dns_name
 }
+
+# Alarma que detecta cuando el ALB se queda sin instancias saludables en el Target Group
+resource "aws_cloudwatch_metric_alarm" "alb_no_healthy_targets" {
+  alarm_name          = "alb-no-healthy-targets"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = 2
+  metric_name         = "HealthyHostCount"
+  namespace           = "AWS/ApplicationELB"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 1
+
+  # Dimensiones: métrica para este Target Group y este Load Balancer
+  dimensions = {
+    TargetGroup  = aws_lb_target_group.tg.arn_suffix
+    LoadBalancer = aws_lb.alb.arn_suffix
+  }
+  alarm_description = "¡¡¡ALB sin instancias saludables!!!"
+}
+
+# Alarma que detecta latencia alta en las respuestas del ALB hacia los clientes
+resource "aws_cloudwatch_metric_alarm" "alb_high_latency" {
+  alarm_name          = "alb-high-latency!!!"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = 2
+  metric_name         = "TargetResponseTime"
+  namespace           = "AWS/ApplicationELB"
+  period              = 300
+  statistic           = "Average"
+  threshold           = 2
+
+  # Dimensiones: mide la latencia del TG y ALB
+  dimensions = {
+    TargetGroup  = aws_lb_target_group.tg.arn_suffix
+    LoadBalancer = aws_lb.alb.arn_suffix
+  }
+  alarm_description = "Latencia alta en respuestas del ALB..."
+}
