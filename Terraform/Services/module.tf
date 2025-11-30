@@ -78,6 +78,11 @@ resource "aws_lb_target_group" "tg" {
 }
 
 resource "aws_lb_listener" "listener" {
+  depends_on = [
+    aws_lb.alb,
+    aws_lb_target_group.tg
+  ]
+
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
@@ -87,6 +92,7 @@ resource "aws_lb_listener" "listener" {
     target_group_arn = aws_lb_target_group.tg.arn
   }
 }
+
 
 
 # Alarma que detecta cuando el ALB se queda sin instancias saludables en el Target Group
