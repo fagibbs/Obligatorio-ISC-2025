@@ -144,6 +144,8 @@ Declarados en providers.tf:
 -	hashicorp/aws
 -	hashicorp/random
 
+
+
 **Autores:**
 Joaquín Manzanar – N° 280373
 Facundo Gibbs – N° 253768
