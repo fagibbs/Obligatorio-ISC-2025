@@ -79,6 +79,7 @@ variable "instance_type" {
 variable "key_name" {
   description = "Nombre del key pair existente en AWS"
   type        = string
+  default = "vockey"
 }
 
 # Nombre de usuario que gestiona la DB
