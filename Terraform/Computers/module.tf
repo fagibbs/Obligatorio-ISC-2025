@@ -37,10 +37,29 @@ resource "aws_launch_template" "app" {
 # Script de inicialización (user_data) que levanta Apache y genera página simple
   user_data = base64encode(<<EOF
 #!/bin/bash
+ 
+# Actualizo paquetes
+yum update -y
+ 
+# Instalo apache
 yum install -y httpd
+ 
+# Habilito y arranco el servicio
 systemctl enable httpd
 systemctl start httpd
-echo "Bien ahí! EC2 funcionando OK. Hola profe!" > /var/www/html/index.html
+ 
+# Creo la página para probar desde el ALB
+echo "EC2 APP OK FROM TERRAFORM" > /var/www/html/index.html
+chmod 644 /var/www/html/index.html
+ 
+# Espero a que Apache realmente esté escuchando en el puerto 80
+for i in {1..10}; do
+    systemctl is-active --quiet httpd && break
+    sleep 3
+done
+ 
+# Fuerzo reinicio si por alguna razón no levantó
+systemctl restart httpd
 EOF
   )
 
@@ -62,10 +81,10 @@ resource "aws_autoscaling_group" "asg" {
   target_group_arns = [var.target_group_arn]
 
  # Indica que el ASG usa el launch template definido arriba
-  launch_template {
-    id      = aws_launch_template.app.id
-    version = "$Latest"
-  }
+launch_template {
+  id      = aws_launch_template.app.id
+  version = aws_launch_template.app.latest_version
+}
 }
 
 # Output con el ID del Security Group de aplicación (para poder usarlo en otros módulos)
