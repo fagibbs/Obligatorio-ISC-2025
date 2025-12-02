@@ -36,7 +36,6 @@ terraform apply
 
 ************(En caso de ser necesario) ************
 terraform destroy
-************(En caso de ser necesario) ************
 
 **Diagrama de Arquitectura**
 Obligatorio-ISC-2025/Obligatorio ISC.jpg
