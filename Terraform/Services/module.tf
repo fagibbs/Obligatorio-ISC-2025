@@ -126,7 +126,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_no_healthy_targets" {
 
 # Alarma que detecta latencia alta en las respuestas del ALB hacia los clientes
 resource "aws_cloudwatch_metric_alarm" "alb_high_latency" {
-  alarm_name          = "alb-high-latency!!!"
+  alarm_name          = "alb-high-latency"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 2
   metric_name         = "TargetResponseTime"
