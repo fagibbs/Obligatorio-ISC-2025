@@ -12,6 +12,8 @@ Respecto a seguridad lo que hicimos fue que el ALB reciba tráfico externo, y la
 
 Para organizar todo, separamos en módulos para que el proyecto quede ordenado y sea fácilmente modificable. Intentamos usar variables lo máximo posible y outputs para no repetir valores y enlazar los módulos sin apilar todo en un solo archivo.
 
+_______________________________________________________________________
+
 **Instructivo de uso:**
 
 Clonar el repositorio:
