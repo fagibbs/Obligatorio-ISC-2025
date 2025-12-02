@@ -49,7 +49,7 @@ systemctl enable httpd
 systemctl start httpd
  
 # Creo la página para probar desde el ALB
-echo "EC2 APP OK FROM TERRAFORM" > /var/www/html/index.html
+echo "EC2 APP FUNCIONÓ PROFE!!!" > /var/www/html/index.html
 chmod 644 /var/www/html/index.html
  
 # Espero a que Apache realmente esté escuchando en el puerto 80
